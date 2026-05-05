@@ -68,19 +68,11 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-
-// Connect to DB (but don't block server start)
-connectDB()
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection failed:", err.message);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}${process.env.API_PREFIX || '/api/v1'}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   });
-
-// Always start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
 
 export default app;
