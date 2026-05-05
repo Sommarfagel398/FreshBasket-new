@@ -68,7 +68,6 @@ Account Tabs
 MongoDB Cluster Setup
 
 - Updated backend/.env to use MongoDB Atlas cluster connection string
-- Set MONGODB_URI to mongodb+srv://kheniethforthree3s_db_user:Zp4qe6wgbodTt06E@cluster0.k27945k.mongodb.net/db_freshbasket
 - Added MONGODB_USER and MONGODB_PASSWORD for cluster authentication
 - Ready for deployment to Render (backend) and Vercel (frontend)
 
