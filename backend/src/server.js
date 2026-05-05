@@ -1,9 +1,9 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 // import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import connectDB from './config/database.js';
 
 // Load environment variables
 dotenv.config();
@@ -57,8 +57,7 @@ app.use((req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res) => {
-  // app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
     success: false,
@@ -67,22 +66,11 @@ app.use((err, req, res) => {
   });
 });
 
-// Database Connection
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/db_freshbasket');
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(`Error connecting to MongoDB: ${error.message}`);
-    process.exit(1);
-  }
-};
-
 // Start server
 const PORT = process.env.PORT || 5000;
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}/api/users`);
+    console.log(`Server running on http://localhost:${PORT}${process.env.API_PREFIX || '/api/v1'}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 });
