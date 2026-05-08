@@ -11,10 +11,13 @@ export default function Shop() {
   const [search, setSearch] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [priceMax, setPriceMax] = useState(500);
+<<<<<<< HEAD
 
   // detect active filters & shared clear function
   const isFiltered = category !== 'all' || search.trim() !== '' || selectedTag !== '' || priceMax < 500;
   const clearFilters = () => { setCategory('all'); setSearch(''); setSelectedTag(''); setPriceMax(500); };
+=======
+>>>>>>> 4ff8dd573da6cf21abc725bbce96754f86cbcd9f
 
   const filtered = useMemo(() => {
     let res = [...products];
