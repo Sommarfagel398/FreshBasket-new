@@ -10,7 +10,7 @@ export default function Shop() {
   const [sort, setSort] = useState('featured');
   const [search, setSearch] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
-  const [priceMax, setPriceMax] = useState(20);
+  const [priceMax, setPriceMax] = useState(500);
 
   const filtered = useMemo(() => {
     let res = [...products];
