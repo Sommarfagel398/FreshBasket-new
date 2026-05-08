@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { loginRequest, signupRequest } from '../api/auth';
 
-export const LOGO_URL = '/freshbasket.png';
+export const LOGO_URL = '../freshbasket.png';
 
 export const AuthContext = createContext(null);
 

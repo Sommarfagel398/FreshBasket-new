@@ -54,11 +54,6 @@ export const MOCK_PROMOS = [
 ];
 
 // ── Static reference data ─────────────────────────────────────────────────────
-export const DELIVERY_ZONES = [
-  { id: 1, name: 'Zone A - City Centre', fee: 50,  minOrder: 500, estimatedTime: 'Same Day' },
-  { id: 2, name: 'Zone B - Suburbs',     fee: 80,  minOrder: 700, estimatedTime: 'Next Day' },
-  { id: 3, name: 'Zone C - Outer Areas', fee: 120, minOrder: 1000, estimatedTime: '2-3 Days' },
-];
 
 export const CATEGORIES = [
   { id: 'all',        label: 'All Products', icon: 'bi-grid-3x3-gap' },

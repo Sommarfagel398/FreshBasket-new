@@ -71,6 +71,12 @@ MongoDB Cluster Setup
 - Added MONGODB_USER and MONGODB_PASSWORD for cluster authentication
 - Ready for deployment to Render (backend) and Vercel (frontend)
 
+Changes and fixes as of 5/8/2026
+
+- added clear filter next to showing results
+- added clear filter button to clear all filters
+
+
 :D
 
 admin account if na save ba for testing purposes

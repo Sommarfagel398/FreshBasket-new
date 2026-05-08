@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { LOGO_URL } from '../../context/AuthContext';
 
 const SOCIAL = ['facebook', 'instagram', 'twitter-x', 'youtube'];
-const SHOP_LINKS   = [['All Products', '/shop'], ['Fruits', '/shop?category=fruits'], ['Vegetables', '/shop?category=vegetables']];
-const ACCOUNT_LINKS = [['Sign In', '/signin'], ['Create Account', '/signup'], ['My Orders', '/account/orders']];
+const SHOP_LINKS = [['All Products', '/shop'], ['Fruits', '/shop?category=fruits'], ['Vegetables', '/shop?category=vegetables']];
 
 export default function Footer() {
   return (
@@ -35,16 +34,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="col-6 col-md-2">
-            <h6 className="text-uppercase fw-bold mb-3" style={{ color: 'var(--zest)', letterSpacing: '0.1em', fontSize: '0.75rem' }}>Account</h6>
-            <ul className="list-unstyled small mb-0" style={{ color: 'var(--sage)' }}>
-              {ACCOUNT_LINKS.map(([label, href]) => (
-                <li key={label} className="mb-2"><Link to={href} className="text-decoration-none" style={{ color: 'inherit' }}>{label}</Link></li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="col-12 col-md-3">
+          <div className="col-12 col-md-3 offset-md-2">
             <h6 className="text-uppercase fw-bold mb-3" style={{ color: 'var(--zest)', letterSpacing: '0.1em', fontSize: '0.75rem' }}>Contact</h6>
             <ul className="list-unstyled small mb-0" style={{ color: 'var(--sage)' }}>
               <li className="mb-2"><i className="bi bi-geo-alt me-2" />123 Farm Road, Green Valley</li>

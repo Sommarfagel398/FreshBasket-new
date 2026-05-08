@@ -11,7 +11,7 @@ const NAV = [
   { path: '/admin/inventory', icon: 'bi-stack',          label: 'Inventory'                   },
   { path: '/admin/customers', icon: 'bi-people',         label: 'Customers'                   },
   { path: '/admin/promos',    icon: 'bi-tag',            label: 'Promo Codes'                 },
-  { path: '/admin/delivery',  icon: 'bi-truck',          label: 'Delivery Zones'              },
+  { path: '/admin/delivery',  icon: 'bi-truck',          label: 'Delivery Schedules'          },
   { path: '/admin/reports',   icon: 'bi-bar-chart-line', label: 'Reports'                     },
 ];
 

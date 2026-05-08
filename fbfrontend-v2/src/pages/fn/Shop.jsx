@@ -10,7 +10,11 @@ export default function Shop() {
   const [sort, setSort] = useState('featured');
   const [search, setSearch] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
-  const [priceMax, setPriceMax] = useState(20);
+  const [priceMax, setPriceMax] = useState(500);
+
+  // detect active filters & shared clear function
+  const isFiltered = category !== 'all' || search.trim() !== '' || selectedTag !== '' || priceMax < 500;
+  const clearFilters = () => { setCategory('all'); setSearch(''); setSelectedTag(''); setPriceMax(500); };
 
   const filtered = useMemo(() => {
     let res = [...products];
@@ -62,8 +66,7 @@ export default function Shop() {
               {/* Categories */}
               <div className="mb-4 p-4 rounded-3" style={{ backgroundColor: 'var(--surface-card)', border: '1px solid #e8e4de' }}>
                 <h6 className="fw-bold mb-3 text-uppercase" style={{ color: 'var(--moss)', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Categories</h6>
-                {[['all', 'All Products', products.length], ['fruits', 'Fresh Fruits', products.filter(
-                              p=>p.category==='fruits').length], ['vegetables', 'Vegetables', products.filter(p=>p.category==='vegetables').length]].map(([val, label, count]) => (
+                {[['all', 'All Products', products.length], ['fruits', 'Fresh Fruits', products.filter(p=>p.category==='fruits').length], ['vegetables', 'Vegetables', products.filter(p=>p.category==='vegetables').length]].map(([val, label, count]) => (
                   <button key={val} onClick={() => setCategory(val)} className="btn btn-sm d-flex align-items-center justify-content-between w-100 text-start mb-2 px-3 py-2 rounded-2"
                     style={{ backgroundColor: category === val ? 'var(--zest)' : 'transparent', color: category === val ? 'var(--surface-card)' : 'var(--moss)', border: category === val ? 'none' : '1px solid #e8e4de', fontWeight: category === val ? 600 : 400 }}>
                     <span>{label}</span>
@@ -73,76 +76,24 @@ export default function Shop() {
               </div>
 
               {/* Price Range */}
-<div
-  className="mb-4 p-4 rounded-3"
-  style={{
-    backgroundColor: 'var(--surface-card)',
-    border: '1px solid #e8e4de'
-  }}
->
-  <h6
-    className="fw-bold mb-3 text-uppercase d-flex justify-content-between"
-    style={{
-      color: 'var(--moss)',
-      fontSize: '0.75rem',
-      letterSpacing: '0.1em'
-    }}
-  >
-    Price Range{" "}
-    <span style={{ color: 'var(--zest)', fontWeight: 700 }}>
-      ≤ ₱{priceMax}
-    </span>
-  </h6>
-
-  <input
-    type="range"
-    className="form-range"
-    min="0"
-    max="500"
-    step="10"
-    value={priceMax}
-    onChange={(e) => setPriceMax(Number(e.target.value))}
-    style={{ accentColor: 'var(--zest)' }}
-  />
-
-  <div className="d-flex justify-content-between mt-1">
-    <small style={{ color: 'var(--sage)', fontSize: '0.72rem' }}>
-      ₱0
-    </small>
-    <small style={{ color: 'var(--sage)', fontSize: '0.72rem' }}>
-      ₱500
-    </small>
-  </div>
-</div>
-
-              {/* <div className="mb-4 p-4 rounded-3" style={{ backgroundColor: 'var(--surface-card)', border: '1px solid #e8e4de' }}>
+              <div className="mb-4 p-4 rounded-3" style={{ backgroundColor: 'var(--surface-card)', border: '1px solid #e8e4de' }}>
                 <h6 className="fw-bold mb-3 text-uppercase d-flex justify-content-between" style={{ color: 'var(--moss)', fontSize: '0.75rem', letterSpacing: '0.1em' }}>
                   Price Range <span style={{ color: 'var(--zest)', fontWeight: 700 }}>≤ ₱{priceMax}</span>
                 </h6>
-                <input type="range" className="form-range" min="1" max="20" value={priceMax} onChange={e => setPriceMax(Number(e.target.value))} style={{ accentColor: 'var(--zest)' }} />
+                <input type="range" className="form-range" min="0" max="500" step="10" value={priceMax} onChange={(e) => setPriceMax(Number(e.target.value))} style={{ accentColor: 'var(--zest)' }} />
                 <div className="d-flex justify-content-between mt-1">
-                  <small style={{ color: 'var(--sage)', fontSize: '0.72rem' }}>₱1</small>
-                  <small style={{ color: 'var(--sage)', fontSize: '0.72rem' }}>₱300</small>
+                  <small style={{ color: 'var(--sage)', fontSize: '0.72rem' }}>₱0</small>
+                  <small style={{ color: 'var(--sage)', fontSize: '0.72rem' }}>₱500</small>
                 </div>
-              </div> */}
+              </div>
 
               {/* Badges Quick Filter */}
               <div className="p-4 rounded-3" style={{ backgroundColor: 'var(--surface-card)', border: '1px solid #e8e4de' }}>
                 <h6 className="fw-bold mb-3 text-uppercase" style={{ color: 'var(--moss)', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Product Tags</h6>
                 <div className="d-flex flex-wrap gap-2">
                   {['Organic', 'Seasonal', 'Premium', 'Popular', 'Superfood'].map(tag => (
-                    <button
-                      key={tag}
-                      onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
-                      className="btn btn-sm rounded-pill"
-                      style={{
-                        backgroundColor: selectedTag === tag ? 'var(--zest)' : 'var(--surface-muted)',
-                        color: selectedTag === tag ? 'var(--surface-card)' : 'var(--moss)',
-                        fontSize: '0.72rem',
-                        border: 'none',
-                        padding: '4px 12px'
-                      }}
-                    >
+                    <button key={tag} onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)} className="btn btn-sm rounded-pill"
+                      style={{ backgroundColor: selectedTag === tag ? 'var(--zest)' : 'var(--surface-muted)', color: selectedTag === tag ? 'var(--surface-card)' : 'var(--moss)', fontSize: '0.72rem', border: 'none', padding: '4px 12px' }}>
                       {tag}
                     </button>
                   ))}
@@ -153,9 +104,20 @@ export default function Shop() {
 
           {/* Products */}
           <div className="col-12 col-lg-9">
+            {/* ✅ UPDATED: sort bar now includes Clear Filters badge */}
             <div className="d-flex align-items-center justify-content-between mb-4">
-              <p className="mb-0 small" style={{ color: 'var(--sage)' }}>Showing <strong style={{ color: 'var(--moss)' }}>{filtered.length}</strong> products</p>
-              <select className="form-select form-select-sm" value={sort} onChange={e => setSort(e.target.value)} style={{ width: 'auto', borderColor: 'var(--bs-border-color)', color: 'var(--moss)', fontSize: '0.85rem', backgroundColor: 'var(--surface-card)', boxShadow: 'none' }}>
+              <p className="mb-0 small d-flex align-items-center gap-2" style={{ color: 'var(--sage)' }}>
+                Showing <strong style={{ color: 'var(--moss)' }}>{filtered.length}</strong> products
+                {isFiltered && (
+                  <button onClick={clearFilters} className="btn btn-sm d-flex align-items-center gap-1 rounded-pill"
+                    style={{ backgroundColor: 'var(--surface-muted)', color: 'var(--moss)', fontSize: '0.72rem', border: '1px solid #e8e4de', padding: '2px 10px' }}>
+                    <i className="bi bi-x-circle-fill" style={{ color: 'var(--zest)', fontSize: '0.75rem' }}></i>
+                    Clear Filters
+                  </button>
+                )}
+              </p>
+              <select className="form-select form-select-sm" value={sort} onChange={e => setSort(e.target.value)}
+                style={{ width: 'auto', borderColor: 'var(--bs-border-color)', color: 'var(--moss)', fontSize: '0.85rem', backgroundColor: 'var(--surface-card)', boxShadow: 'none' }}>
                 <option value="featured">Featured</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
@@ -169,7 +131,10 @@ export default function Shop() {
                 <i className="bi bi-search d-block mb-3" style={{ fontSize: '3rem', color: 'var(--sage)' }}></i>
                 <h5 style={{ color: 'var(--moss)' }}>No products found</h5>
                 <p style={{ color: 'var(--sage)' }}>Try adjusting your filters</p>
-                <button onClick={() => { setCategory('all'); setSearch(''); setPriceMax(20); }} className="btn btn-sm" style={{ backgroundColor: 'var(--zest)', color: 'var(--surface-card)', border: 'none' }}>Clear Filters</button>
+                {/* ✅ UPDATED: uses shared clearFilters, correct priceMax reset */}
+                <button onClick={clearFilters} className="btn btn-sm" style={{ backgroundColor: 'var(--zest)', color: 'var(--surface-card)', border: 'none' }}>
+                  Clear Filters
+                </button>
               </div>
             ) : (
               <div className="row g-4">
