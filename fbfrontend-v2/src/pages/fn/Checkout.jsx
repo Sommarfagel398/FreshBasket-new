@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useApp } from '../../lib/AppContext';
+import { DELIVERY_ZONES } from '../../lib/mockData';
 
 export default function Checkout() {
   const { cart, cartTotal, currentUser, placeOrder, clearCart } = useApp();
@@ -9,12 +10,13 @@ export default function Checkout() {
   const { discount = 0, appliedPromo = null, finalTotal = cartTotal + 4.99 } = location.state || {};
 
   const today = new Date();
-  const minDate = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-  const maxDate = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const minDate = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
+  const maxDate = new Date(today.setDate(today.getDate() + 14)).toISOString().split('T')[0];
 
   const [form, setForm] = useState({
     address: currentUser?.address || '',
     deliveryDate: minDate,
+    deliveryZone: '1',
     paymentMethod: 'card',
     cardNumber: '',
     cardName: '',
@@ -27,7 +29,8 @@ export default function Checkout() {
 
   const set = (key) => (e) => setForm(p => ({ ...p, [key]: e.target.value }));
 
-  const deliveryFee = cartTotal > 500 ? 0 : 50;
+  const selectedZone = DELIVERY_ZONES.find(z => z.id === parseInt(form.deliveryZone));
+  const deliveryFee = cartTotal > 50 ? 0 : selectedZone?.fee || 4.99;
   const total = cartTotal - discount + deliveryFee;
 
   const handlePlaceOrder = async () => {
@@ -114,12 +117,21 @@ export default function Checkout() {
                     <input type="text" className="form-control" value={form.address} onChange={set('address')} required style={{ borderColor: 'var(--bs-border-color)', boxShadow: 'none', backgroundColor: 'var(--surface-muted)' }} />
                   </div>
                 </div>
+                <div className="mb-3">
+                  <label className="form-label small fw-medium" style={{ color: 'var(--moss)' }}>Delivery Zone</label>
+                  <select className="form-select" value={form.deliveryZone} onChange={set('deliveryZone')} style={{ borderColor: 'var(--bs-border-color)', boxShadow: 'none', backgroundColor: 'var(--surface-muted)' }}>
+                    {DELIVERY_ZONES.map(z => (
+                      <option key={z.id} value={z.id}>{z.name} — ₱{z.fee} fee — {z.estimatedTime}</option>
+                    ))}
+                  </select>
+                </div>
                 <div className="mb-4">
                   <label className="form-label small fw-medium" style={{ color: 'var(--moss)' }}>Delivery Date</label>
                   <div className="input-group">
                     <span className="input-group-text" style={{ backgroundColor: 'var(--surface-muted)', borderColor: 'var(--bs-border-color)' }}><i className="bi bi-calendar" style={{ color: 'var(--sage)' }}></i></span>
                     <input type="date" className="form-control" min={minDate} max={maxDate} value={form.deliveryDate} onChange={set('deliveryDate')} style={{ borderColor: 'var(--bs-border-color)', boxShadow: 'none', backgroundColor: 'var(--surface-muted)' }} />
                   </div>
+                  {selectedZone && <small className="mt-1 d-block" style={{ color: 'var(--sage)' }}><i className="bi bi-info-circle me-1"></i>{selectedZone.estimatedTime} delivery for {selectedZone.name}</small>}
                 </div>
                 <button onClick={() => setStep(2)} className="btn fw-bold py-2 px-5" disabled={!form.address || !form.deliveryDate}
                   style={{ backgroundColor: 'var(--zest)', color: 'var(--surface-card)', border: 'none', borderRadius: 0, letterSpacing: '0.5px' }}>
@@ -244,7 +256,7 @@ export default function Checkout() {
                 </div>
               )}
               <div className="d-flex justify-content-between mb-3 small">
-                <span style={{ color: 'var(--sage)' }}>Delivery</span>
+                <span style={{ color: 'var(--sage)' }}>Delivery ({selectedZone?.name})</span>
                 <span style={{ color: deliveryFee === 0 ? 'var(--status-success-text)' : 'var(--moss)' }}>{deliveryFee === 0 ? 'FREE' : `₱${deliveryFee.toFixed(2)}`}</span>
               </div>
               <div className="d-flex justify-content-between fw-bold pt-2" style={{ borderTop: '2px solid #f0ede8' }}>
